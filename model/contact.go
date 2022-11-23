@@ -1,9 +1,7 @@
 package model
 
-import (
-	// "errors"
-	// "strconv"
-)
+// "errors"
+// "strconv"
 
 type Contact struct {
 	id         int
@@ -13,7 +11,7 @@ type Contact struct {
 }
 
 type Phone struct {
-	id int
+	id    int
 	phone string
 }
 

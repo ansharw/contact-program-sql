@@ -31,7 +31,8 @@ func (c *contactTemplate) ListContact() {
 	} else {
 		for _, v := range contacts {
 			id, name, phone_data, email := v.GetContact()
-			fmt.Printf("%v\t%v\t\t%v\t\t%v\n", *id, *name, *phone_data, *email)
+			phone := helper.PhoneToString(*phone_data)
+			fmt.Printf("%v\t%v\t\t%v\t\t%v\n", *id, *name, phone, *email)
 		}
 	}
 	fmt.Println("==========================================================")
