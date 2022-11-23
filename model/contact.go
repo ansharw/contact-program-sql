@@ -33,6 +33,10 @@ func (p *Phone) SetPhone(id int, phone string) {
 	p.phone = phone
 }
 
+func (p *Phone) GetPhone() (*int, *string) {
+	return &p.id, &p.phone
+}
+
 // var Contacts []Contact
 
 // func GetLastId() int {

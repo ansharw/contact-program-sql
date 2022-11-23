@@ -6,9 +6,37 @@ import (
 	"context"
 )
 
-func GetContacts(contactInterface interfaces.ContactRepository) ([]model.Contact, error) {
+type ContactHandler interface {
+	GetContacts() ([]model.Contact, error)
+}
+
+type contacthandler struct {
+	contactInterface interfaces.ContactInterface
+	phoneInterface   interfaces.PhoneInterface
+}
+
+func NewContactHandler(contactInterface interfaces.ContactInterface, phoneInterface interfaces.PhoneInterface) *contacthandler {
+	return &contacthandler{contactInterface, phoneInterface}
+}
+
+func (c *contacthandler) GetContacts() ([]model.Contact, error) {
 	ctx := context.Background()
-	return contactInterface.FindAll(ctx)
+
+	contacts, err := c.contactInterface.FindAll(ctx)
+	if err != nil {
+		return contacts, err
+	}
+
+	for i, v := range contacts {
+		id, name, _, email := v.GetContact()
+		phoneDatas, err := c.phoneInterface.GetPhoneByContactId(ctx, *id)
+		if err != nil {
+			return nil, err
+		}
+		contacts[i].SetContact(*id, *name, phoneDatas, *email)
+	}
+
+	return contacts, nil
 }
 
 // func UpdateContactHandler(co interfaces.ContactInterface, name, phone, email string) {

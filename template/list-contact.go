@@ -3,14 +3,23 @@ package template
 import (
 	"contact-program-fundamental/controller"
 	"contact-program-fundamental/helper"
-	"contact-program-fundamental/repository"
+	"database/sql"
 	"fmt"
 )
 
-func ListContact(contactRepository *repository.ContactRepository) {
+type contactTemplate struct {
+	contactHandler controller.ContactHandler
+	db             *sql.DB
+}
+
+func NewContactTemplate(contactHandler controller.ContactHandler, db *sql.DB) *contactTemplate {
+	return &contactTemplate{contactHandler, db}
+}
+
+func (c *contactTemplate) ListContact() {
 	helper.ClearScreen()
 
-	contacts, err := controller.GetContacts(contactRepository)
+	contacts, err := c.contactHandler.GetContacts()
 	if err != nil {
 		panic(err)
 	}
@@ -27,5 +36,5 @@ func ListContact(contactRepository *repository.ContactRepository) {
 	}
 	fmt.Println("==========================================================")
 	helper.BackHandler()
-	Menu(contactRepository)
+	Menu(c.db)
 }

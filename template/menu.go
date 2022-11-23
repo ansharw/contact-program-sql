@@ -1,13 +1,21 @@
 package template
 
 import (
+	"contact-program-fundamental/controller"
 	"contact-program-fundamental/helper"
 	"contact-program-fundamental/repository"
+	"database/sql"
 	"fmt"
 	"os"
 )
 
-func Menu(contactRepository *repository.ContactRepository) {
+func Menu(db *sql.DB) {
+	// Dependency Injection
+	contactRepository := repository.NewContactRepository(db)
+	phoneRepository := repository.NewPhoneRepository(db)
+	contactHandler := controller.NewContactHandler(contactRepository, phoneRepository)
+	contactTemplate := NewContactTemplate(contactHandler, db)
+
 	helper.ClearScreen()
 	fmt.Println("Menu")
 	fmt.Println("=================")
@@ -23,7 +31,7 @@ func Menu(contactRepository *repository.ContactRepository) {
 
 	switch menu {
 	case 1:
-		ListContact(contactRepository)
+		contactTemplate.ListContact()
 	// case 2:
 	// 	AddContact()
 	// case 3:
@@ -33,6 +41,6 @@ func Menu(contactRepository *repository.ContactRepository) {
 	case 5:
 		os.Exit(0)
 	default:
-		Menu(contactRepository)
+		Menu(db)
 	}
 }

@@ -5,7 +5,7 @@ import (
 	"context"
 )
 
-type ContactRepository interface {
+type ContactInterface interface {
 	// Insert(ctx context.Context, comment model.Comment) (entity.Comment, error)
 	// FindById(ctx context.Context, id int) (entity.Comment, error)
 	FindAll(ctx context.Context) ([]model.Contact, error)
