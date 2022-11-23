@@ -10,6 +10,19 @@ type ContactRepository struct {
 	db *sql.DB
 }
 
+// Insert implements interfaces.ContactInterface
+func (repo *ContactRepository) Insert(ctx context.Context, contact model.Contact) (model.Contact, error) {
+	var query string = "INSERT INTO contact(name, email) VALUES(?, ?)"
+	_, name, phone, email := contact.GetContact()
+	res, err := repo.db.ExecContext(ctx, query, name, email)
+	if err != nil {
+		return contact, nil
+	}
+	lastInsertId, _ := res.LastInsertId()
+	contact.SetContact(int(lastInsertId), *name, *phone, *email)
+	return contact, nil
+}
+
 func NewContactRepository(db *sql.DB) *ContactRepository {
 	return &ContactRepository{db}
 }

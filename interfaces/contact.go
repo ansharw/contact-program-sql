@@ -6,7 +6,7 @@ import (
 )
 
 type ContactInterface interface {
-	// Insert(ctx context.Context, comment model.Comment) (entity.Comment, error)
 	// FindById(ctx context.Context, id int) (entity.Comment, error)
 	FindAll(ctx context.Context) ([]model.Contact, error)
+	Insert(ctx context.Context,contact model.Contact) (model.Contact, error)
 }
