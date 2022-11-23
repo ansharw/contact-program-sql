@@ -30,8 +30,8 @@ func (c *contactTemplate) ListContact() {
 		fmt.Println("Data kosong")
 	} else {
 		for _, v := range contacts {
-			id, name, _, email := v.GetContact()
-			fmt.Printf("%v\t%v\t\t%v\n", *id, *name, *email)
+			id, name, phone_data, email := v.GetContact()
+			fmt.Printf("%v\t%v\t\t%v\t\t%v\n", *id, *name, *phone_data, *email)
 		}
 	}
 	fmt.Println("==========================================================")
