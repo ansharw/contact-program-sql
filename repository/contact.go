@@ -40,7 +40,7 @@ func (repo *contactRepository) SearchById(ctx context.Context, contact_id int) (
 	var contact model.Contact
 	var query string = "SELECT id, name, email FROM contact WHERE id=?"
 	id, name, _, email := contact.GetContact()
-	rows := repo.db.QueryRowContext(ctx, query, contact_id)	
+	rows := repo.db.QueryRowContext(ctx, query, contact_id)
 	err := rows.Scan(id, name, email)
 	if err != nil {
 		return contact, err
