@@ -24,14 +24,14 @@ func (c *contactTemplate) ListContact() {
 		panic(err)
 	}
 	fmt.Println("==========================================================")
-	fmt.Println("ID\tNama\t\tPhone\t\tEmail")
+	fmt.Println("ID\tNama\t\tEmail\t\tPhone")
 	fmt.Println("==========================================================")
 	if len(contacts) == 0 {
 		fmt.Println("Data kosong")
 	} else {
 		for _, v := range contacts {
 			id, name, phone_data, email := v.GetContact()
-			fmt.Printf("%v\t%v\t\t%v\t\t%v\n", *id, *name, helper.PhoneToString(*phone_data), *email)
+			fmt.Printf("%v\t%v\t\t%v\t\t%v\n", *id, *name, *email, helper.PhoneToString(*phone_data))
 		}
 	}
 	fmt.Println("==========================================================")

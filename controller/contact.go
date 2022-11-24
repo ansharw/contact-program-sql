@@ -8,7 +8,10 @@ import (
 
 type ContactHandler interface {
 	GetContacts() ([]model.Contact, error)
-	InsertContact(name, email string, phone []string) (model.Contact, error)
+	// with nilai balikan sehabis insert
+	// InsertContact(name, email string, phone []string) (model.Contact, error)
+	// without nilai balikan sehabis insert
+	InsertContact(name, email string, phone []string) error
 }
 
 type contacthandler struct {
@@ -40,7 +43,36 @@ func (c *contacthandler) GetContacts() ([]model.Contact, error) {
 	return contacts, nil
 }
 
-func (c *contacthandler) InsertContact(name, email string, phone []string) (model.Contact, error) {
+// // with return struct dari sehabis insert data
+// func (c *contacthandler) InsertContact(name, email string, phone []string) (model.Contact, error) {
+// 	ctx := context.Background()
+
+// 	var contact model.Contact
+// 	var phoneDatas []model.Phone
+
+// 	// init struct contact from parameter
+// 	contact.SetContact(0, name, phoneDatas, email)
+// 	contact, err := c.contactInterface.Insert(ctx, contact)
+// 	if err != nil {
+// 		return contact, err
+// 	}
+
+// 	for _, v := range phone {
+// 		var phone model.Phone
+// 		phone.SetPhone(0, v)
+// 		phoneDatas = append(phoneDatas, phone)
+// 	}
+// 	phoneDatas, err = c.phoneInterface.InsertPhones(ctx, phoneDatas, *contact.GetId())
+// 	if err != nil {
+// 		return contact, err
+// 	}
+// 	contact.SetPhone(phoneDatas)
+
+// 	return contact, nil
+// }
+
+// without return struct dari sehabis insert data
+func (c *contacthandler) InsertContact(name, email string, phone []string) error {
 	ctx := context.Background()
 
 	var contact model.Contact
@@ -50,7 +82,7 @@ func (c *contacthandler) InsertContact(name, email string, phone []string) (mode
 	contact.SetContact(0, name, phoneDatas, email)
 	contact, err := c.contactInterface.Insert(ctx, contact)
 	if err != nil {
-		return contact, err
+		return err
 	}
 
 	for _, v := range phone {
@@ -60,11 +92,11 @@ func (c *contacthandler) InsertContact(name, email string, phone []string) (mode
 	}
 	phoneDatas, err = c.phoneInterface.InsertPhones(ctx, phoneDatas, *contact.GetId())
 	if err != nil {
-		return contact, err
+		return err
 	}
 	contact.SetPhone(phoneDatas)
 
-	return contact, nil
+	return nil
 }
 
 // func UpdateContactHandler(co interfaces.ContactInterface, name, phone, email string) {

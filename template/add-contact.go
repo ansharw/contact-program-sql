@@ -8,7 +8,34 @@ import (
 	"strings"
 )
 
-func (c *contactTemplate) InsertContact() (model.Contact, error) {
+// // with return struct sehabis dari insert data
+// func (c *contactTemplate) InsertContact() (model.Contact, error) {
+// 	helper.ClearScreen()
+// 	var email string
+// 	var phoneSlice []string
+// 	fmt.Println("Add Contact")
+// 	fmt.Println("===============")
+// 	name := InputName()
+// 	phone := *InputPhone(&phoneSlice)
+// 	fmt.Print("Email: ")
+// 	fmt.Scanln(&email)
+
+// 	var contact model.Contact
+// 	res, err := c.contactHandler.InsertContact(name, email, phone)
+// 	if err != nil {
+// 		return contact, err
+// 	}
+
+// 	//Message berhasil
+// 	fmt.Println("")
+// 	fmt.Println("Data berhasil di input.")
+// 	helper.BackHandler()
+// 	Menu(c.db)
+// 	return res, err
+// }
+
+// without return struct sehabis dari insert data
+func (c *contactTemplate) InsertContact() error {
 	helper.ClearScreen()
 	var email string
 	var phoneSlice []string
@@ -19,10 +46,10 @@ func (c *contactTemplate) InsertContact() (model.Contact, error) {
 	fmt.Print("Email: ")
 	fmt.Scanln(&email)
 
-	var contact model.Contact
-	res, err := c.contactHandler.InsertContact(name, email, phone)
+	// var contact model.Contact
+	err := c.contactHandler.InsertContact(name, email, phone)
 	if err != nil {
-		return contact, err
+		return err
 	}
 
 	//Message berhasil
@@ -30,7 +57,7 @@ func (c *contactTemplate) InsertContact() (model.Contact, error) {
 	fmt.Println("Data berhasil di input.")
 	helper.BackHandler()
 	Menu(c.db)
-	return res, err
+	return err
 }
 
 func InputName() string {
@@ -56,7 +83,7 @@ func InputPhone(phoneSlice *[]string) *[]string {
 	if strings.ToLower(lagi) == "y" {
 		InputPhone(phoneSlice)
 	}
-	return *&phoneSlice
+	return phoneSlice
 }
 
 func ValidateName(name *string) bool {
