@@ -13,7 +13,8 @@ type ContactHandler interface {
 	// without nilai balikan sehabis insert
 	InsertContact(name, email string, phone []string) error
 	DeleteContact(id int) error
-	SearchContactById(id int) (model.Contact, error)
+	// SearchContactById(id int) (model.Contact, error)
+	GetContact(id int) (model.Contact, error)
 }
 
 type contacthandler struct {
@@ -118,12 +119,26 @@ func (c *contacthandler) DeleteContact(id int) error {
 	}
 }
 
-func (c *contacthandler) SearchContactById(id int) (model.Contact, error) {
+// func (c *contacthandler) SearchContactById(id int) (model.Contact, error) {
+// 	ctx := context.Background()
+// 	contact, err := c.contactInterface.SearchById(ctx, id)
+// 	if err != nil {
+// 		return contact, err
+// 	}
+// 	return contact, nil
+// }
+
+func (c *contacthandler) GetContact(id int) (model.Contact, error) {
 	ctx := context.Background()
 	contact, err := c.contactInterface.SearchById(ctx, id)
 	if err != nil {
 		return contact, err
 	}
+	phoneDatas, err := c.phoneInterface.GetPhoneByContactId(ctx, id)
+	if err != nil {
+		return contact, err
+	}
+	contact.SetPhone(phoneDatas)
 	return contact, nil
 }
 
