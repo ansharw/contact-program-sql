@@ -15,8 +15,16 @@ func (c *contactTemplate) DeleteContact() {
 
 	err := c.contactHandler.DeleteContact(id)
 	if err != nil {
-		panic(err)
+		// Message gagal di delete
+		fmt.Println("")
+		fmt.Println("Data gagal di didelete.")
+		helper.BackHandler()
+		Menu(c.db)
 	}
+	//Message berhasil
+	fmt.Println("Data berhasil di didelete.")
+	helper.BackHandler()
+	Menu(c.db)
 
 	// contact, err := model.SearchById(&id)
 	// if err != nil {
@@ -30,15 +38,6 @@ func (c *contactTemplate) DeleteContact() {
 	// 	fmt.Println("Email:", email)
 	// 	fmt.Println("===============")
 	// }
-
-	// confirmDelete()
-	// controller.DeleteContactHandler(&contact)
-
-	//Message berhasil
-	fmt.Println("")
-	fmt.Println("Data berhasil di didelete.")
-	helper.BackHandler()
-	Menu(c.db)
 }
 
 // func confirmDelete() {

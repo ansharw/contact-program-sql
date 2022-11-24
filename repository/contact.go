@@ -36,6 +36,18 @@ func (repo *contactRepository) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
+func (repo *contactRepository) SearchById(ctx context.Context, contact_id int) (model.Contact, error) {
+	var contact model.Contact
+	var query string = "SELECT id, name, email FROM contact WHERE id=?"
+	id, name, _, email := contact.GetContact()
+	rows := repo.db.QueryRowContext(ctx, query, contact_id)	
+	err := rows.Scan(id, name, email)
+	if err != nil {
+		return contact, err
+	}
+	return contact, nil
+}
+
 func (repo *contactRepository) FindAll(ctx context.Context) ([]model.Contact, error) {
 	var query string = "SELECT id, name, email FROM contact"
 	var contacts []model.Contact
