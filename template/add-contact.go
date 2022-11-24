@@ -37,17 +37,17 @@ import (
 // without return struct sehabis dari insert data
 func (c *contactTemplate) InsertContact() {
 	helper.ClearScreen()
-	var email string
+	var name, email string
 	var phoneSlice []string
 	fmt.Println("Add Contact")
 	fmt.Println("===============")
-	name := InputName()
-	phone := *InputPhone(&phoneSlice)
+	InputName(&name)
+	InputPhone(&phoneSlice)
 	fmt.Print("Email: ")
 	fmt.Scanln(&email)
 
 	// var contact model.Contact
-	err := c.contactHandler.InsertContact(name, email, phone)
+	err := c.contactHandler.InsertContact(name, email, phoneSlice)
 	if err != nil {
 		panic(err)
 	}
@@ -59,19 +59,20 @@ func (c *contactTemplate) InsertContact() {
 	Menu(c.db)
 }
 
-func InputName() string {
-	var name string
+// diganti pake pointer di parameter
+func InputName(input *string) {
+	var inputName string
 	fmt.Print("Name: ")
-	fmt.Scanln(&name)
+	fmt.Scanln(&input)
 
-	if !ValidateName(&name) {
+	if !ValidateName(&inputName) {
 		fmt.Println("Name tidak boleh kosong")
-		InputName()
+		InputName(input)
 	}
-	return name
+	input = &inputName
 }
 
-func InputPhone(phoneSlice *[]string) *[]string {
+func InputPhone(phoneSlice *[]string) {
 	var phone string
 	fmt.Print("Phone: ")
 	fmt.Scanln(&phone)
@@ -82,7 +83,6 @@ func InputPhone(phoneSlice *[]string) *[]string {
 	if strings.ToLower(lagi) == "y" {
 		InputPhone(phoneSlice)
 	}
-	return phoneSlice
 }
 
 func ValidateName(name *string) bool {
