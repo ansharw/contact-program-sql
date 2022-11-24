@@ -35,7 +35,7 @@ import (
 // }
 
 // without return struct sehabis dari insert data
-func (c *contactTemplate) InsertContact() error {
+func (c *contactTemplate) InsertContact() {
 	helper.ClearScreen()
 	var email string
 	var phoneSlice []string
@@ -49,7 +49,7 @@ func (c *contactTemplate) InsertContact() error {
 	// var contact model.Contact
 	err := c.contactHandler.InsertContact(name, email, phone)
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	//Message berhasil
@@ -57,7 +57,6 @@ func (c *contactTemplate) InsertContact() error {
 	fmt.Println("Data berhasil di input.")
 	helper.BackHandler()
 	Menu(c.db)
-	return err
 }
 
 func InputName() string {
