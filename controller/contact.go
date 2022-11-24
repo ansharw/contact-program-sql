@@ -46,6 +46,7 @@ func (c *contacthandler) InsertContact(name, email string, phone []string) (mode
 	var contact model.Contact
 	var phoneDatas []model.Phone
 
+	// init struct contact from parameter
 	contact.SetContact(0, name, phoneDatas, email)
 	contact, err := c.contactInterface.Insert(ctx, contact)
 	if err != nil {
@@ -58,9 +59,12 @@ func (c *contacthandler) InsertContact(name, email string, phone []string) (mode
 		phoneDatas = append(phoneDatas, phone)
 	}
 	phoneDatas, err = c.phoneInterface.InsertPhones(ctx, phoneDatas, *contact.GetId())
+	if err != nil {
+		return contact, err
+	}
 	contact.SetPhone(phoneDatas)
 
-	return contact, err
+	return contact, nil
 }
 
 // func UpdateContactHandler(co interfaces.ContactInterface, name, phone, email string) {
