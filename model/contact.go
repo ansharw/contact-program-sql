@@ -26,6 +26,14 @@ func (c *Contact) GetContact() (*int, *string, *[]Phone, *string) {
 	return &c.id, &c.name, &c.phone_data, &c.email
 }
 
+func (c *Contact) GetId() *int {
+	return &c.id
+}
+
+func (p *Contact) SetPhone(phoneDatas []Phone) {
+	p.phone_data = phoneDatas
+}
+
 func (p *Phone) SetPhone(id int, phone string) {
 	p.id = id
 	p.phone = phone

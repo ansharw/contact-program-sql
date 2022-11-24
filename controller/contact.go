@@ -45,12 +45,22 @@ func (c *contacthandler) InsertContact(name, email string, phone []string) (mode
 
 	var contact model.Contact
 	var phoneDatas []model.Phone
-	contact.SetContact(0, name, phoneDatas, email)
-	
-	res, err := c.contactInterface.Insert(ctx, contact)
-	// c.phoneInterface.Insert(ctx, phoneDatas)
 
-	return res, err
+	contact.SetContact(0, name, phoneDatas, email)
+	contact, err := c.contactInterface.Insert(ctx, contact)
+	if err != nil {
+		return contact, err
+	}
+
+	for _, v := range phone {
+		var phone model.Phone
+		phone.SetPhone(0, v)
+		phoneDatas = append(phoneDatas, phone)
+	}
+	phoneDatas, err = c.phoneInterface.InsertPhones(ctx, phoneDatas, *contact.GetId())
+	contact.SetPhone(phoneDatas)
+
+	return contact, err
 }
 
 // func UpdateContactHandler(co interfaces.ContactInterface, name, phone, email string) {
