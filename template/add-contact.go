@@ -63,13 +63,13 @@ func (c *contactTemplate) InsertContact() {
 func InputName(input *string) {
 	var inputName string
 	fmt.Print("Name: ")
-	fmt.Scanln(&input)
+	fmt.Scanln(&inputName)
 
 	if !ValidateName(&inputName) {
 		fmt.Println("Name tidak boleh kosong")
-		InputName(input)
+		InputName(&inputName)
 	}
-	input = &inputName
+	*input = inputName
 }
 
 func InputPhone(phoneSlice *[]string) {
