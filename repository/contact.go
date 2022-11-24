@@ -27,6 +27,16 @@ func (repo *contactRepository) Insert(ctx context.Context, contact model.Contact
 	return contact, nil
 }
 
+func (repo *contactRepository) Update(ctx context.Context, contact model.Contact) (model.Contact, error) {
+	var query string = "UPDATE contact SET name = ?, email = ? WHERE id = ?;"
+
+	_, err := repo.db.ExecContext(ctx, query, contact.GetName(), contact.GetEmail(), contact.GetId())
+	if err != nil {
+		return contact, err
+	}
+	return contact, nil
+}
+
 func (repo *contactRepository) Delete(ctx context.Context, id int) error {
 	var query string = "DELETE FROM contact WHERE id=?;"
 	_, err := repo.db.ExecContext(ctx, query, id)

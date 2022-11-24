@@ -15,6 +15,7 @@ type ContactHandler interface {
 	DeleteContact(id int) error
 	// SearchContactById(id int) (model.Contact, error)
 	GetContact(id int) (model.Contact, error)
+	UpdateContact(id int, name, email string, phone []string) error
 }
 
 type contacthandler struct {
@@ -99,6 +100,38 @@ func (c *contacthandler) InsertContact(name, email string, phone []string) error
 	}
 	contact.SetPhone(phoneDatas)
 	return nil
+}
+
+func (c *contacthandler) UpdateContact(id int, name, email string, phone []string) error {
+	ctx := context.Background()
+	var contact model.Contact
+	var phoneDatas []model.Phone
+
+	_, err := c.contactInterface.SearchById(ctx, id)
+	if err == nil {
+		err1 := c.phoneInterface.DeletePhoneByContactId(ctx, id)
+		if err != nil {
+			return err1
+		}
+		contact.UpdateContact(*contact.GetId(), name, phoneDatas, email)
+		_, err := c.contactInterface.Update(ctx, contact)
+		if err != nil {
+			return err
+		}
+		for _, v := range phone {
+			var phone model.Phone
+			phone.SetPhone(*contact.GetId(), v)
+			phoneDatas = append(phoneDatas, phone)
+		}
+		phoneDatas, err := c.phoneInterface.InsertPhones(ctx, phoneDatas, *contact.GetId())
+		if err != nil {
+			return err
+		}
+		contact.SetPhone(phoneDatas)
+		return nil
+	} else {
+		return err
+	}
 }
 
 func (c *contacthandler) DeleteContact(id int) error {

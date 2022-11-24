@@ -11,4 +11,5 @@ type ContactInterface interface {
 	Insert(ctx context.Context, contact model.Contact) (model.Contact, error)
 	Delete(ctx context.Context, id int) error
 	SearchById(ctx context.Context, id int) (model.Contact, error)
+	Update(ctx context.Context, contact model.Contact) (model.Contact, error)
 }

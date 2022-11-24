@@ -78,7 +78,7 @@ func InputPhone(phoneSlice *[]string) {
 	fmt.Scanln(&phone)
 	*phoneSlice = append(*phoneSlice, phone)
 	var lagi string
-	fmt.Print("input phone lagi: ")
+	fmt.Print("input phone lagi (y/t): ")
 	fmt.Scanln(&lagi)
 	if strings.ToLower(lagi) == "y" {
 		InputPhone(phoneSlice)

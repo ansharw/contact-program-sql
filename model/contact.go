@@ -22,6 +22,13 @@ func (c *Contact) SetContact(id int, name string, phone_data []Phone, email stri
 	c.email = email
 }
 
+func (c *Contact) UpdateContact(id int, name string, phone_data []Phone, email string) {
+	c.id = id
+	c.name = name
+	c.phone_data = phone_data
+	c.email = email
+}
+
 func (c *Contact) GetContact() (*int, *string, *[]Phone, *string) {
 	return &c.id, &c.name, &c.phone_data, &c.email
 }
@@ -30,6 +37,15 @@ func (c *Contact) GetId() *int {
 	return &c.id
 }
 
+func (c *Contact) GetName() *string {
+	return &c.name
+}
+
+func (c *Contact) GetEmail() *string {
+	return &c.email
+}
+
+// buat banyak phone
 func (p *Contact) SetPhone(phoneDatas []Phone) {
 	p.phone_data = phoneDatas
 }
