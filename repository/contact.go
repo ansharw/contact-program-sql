@@ -6,28 +6,29 @@ import (
 	"database/sql"
 )
 
-type ContactRepository struct {
+type contactRepository struct {
 	db *sql.DB
 }
 
+func NewContactRepository(db *sql.DB) *contactRepository {
+	return &contactRepository{db}
+}
+
 // Insert implements interfaces.ContactInterface
-func (repo *ContactRepository) Insert(ctx context.Context, contact model.Contact) (model.Contact, error) {
+func (repo *contactRepository) Insert(ctx context.Context, contact model.Contact) (model.Contact, error) {
 	var query string = "INSERT INTO contact(name, email) VALUES(?, ?)"
 	_, name, phone, email := contact.GetContact()
 	res, err := repo.db.ExecContext(ctx, query, name, email)
 	if err != nil {
-		return contact, nil
+		return contact, err
 	}
 	lastInsertId, _ := res.LastInsertId()
 	contact.SetContact(int(lastInsertId), *name, *phone, *email)
 	return contact, nil
 }
 
-func NewContactRepository(db *sql.DB) *ContactRepository {
-	return &ContactRepository{db}
-}
 
-func (repo *ContactRepository) FindAll(ctx context.Context) ([]model.Contact, error) {
+func (repo *contactRepository) FindAll(ctx context.Context) ([]model.Contact, error) {
 	var query string = "SELECT id, name, email FROM contact"
 	var contacts []model.Contact
 

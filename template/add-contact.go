@@ -1,53 +1,71 @@
 package template
 
 import (
-	// "contact-program-fundamental/controller"
-	// "contact-program-fundamental/helper"
-	// "contact-program-fundamental/model"
-	// "fmt"
-	// "reflect"
+	"contact-program-fundamental/helper"
+	"contact-program-fundamental/model"
+	"fmt"
+	"reflect"
+	"strings"
 )
 
-// func AddContact() {
-// 	helper.ClearScreen()
-// 	var phone, email string
-// 	fmt.Println("Add Contact")
-// 	fmt.Println("===============")
-// 	name := InputName()
-// 	fmt.Print("Phone: ")
-// 	fmt.Scanln(&phone)
-// 	fmt.Print("Email: ")
-// 	fmt.Scanln(&email)
+func (c *contactTemplate) InsertContact() (model.Contact, error) {
+	helper.ClearScreen()
+	var email string
+	var phoneSlice []string
+	fmt.Println("Add Contact")
+	fmt.Println("===============")
+	name := InputName()
+	phone := *InputPhone(&phoneSlice)
+	fmt.Print("Email: ")
+	fmt.Scanln(&email)
 
-// 	var contact model.Contact
-// 	controller.InsertContactHandler(&contact, name, phone, email)
+	var contact model.Contact
+	res, err := c.contactHandler.InsertContact(name, email, phone)
+	if err != nil {
+		return contact, err
+	}
 
-// 	//Message berhasil
-// 	fmt.Println("")
-// 	fmt.Println("Data berhasil di input.")
-// 	helper.BackHandler()
-// 	Menu()
-// }
+	//Message berhasil
+	fmt.Println("")
+	fmt.Println("Data berhasil di input.")
+	helper.BackHandler()
+	Menu(c.db)
+	return res, err
+}
 
-// func InputName() string {
-// 	var name string
-// 	fmt.Print("Name: ")
-// 	fmt.Scanln(&name)
+func InputName() string {
+	var name string
+	fmt.Print("Name: ")
+	fmt.Scanln(&name)
 
-// 	if !ValidateName(&name) {
-// 		fmt.Println("Name tidak boleh kosong")
-// 		InputName()
-// 	}
-// 	return name
-// }
+	if !ValidateName(&name) {
+		fmt.Println("Name tidak boleh kosong")
+		InputName()
+	}
+	return name
+}
 
-// func ValidateName(name *string) bool {
-// 	var c model.Contact
-// 	typeOf := reflect.TypeOf(c)
-// 	if typeOf.Field(1).Tag.Get("required") == "true" {
-// 		if *name == "" {
-// 			return false
-// 		}
-// 	}
-// 	return true
-// }
+func InputPhone(phoneSlice *[]string) *[]string {
+	var phone string
+	fmt.Print("Phone: ")
+	fmt.Scanln(&phone)
+	*phoneSlice = append(*phoneSlice, phone)
+	var lagi string
+	fmt.Print("input phone lagi: ")
+	fmt.Scanln(&lagi)
+	if strings.ToLower(lagi) == "y" {
+		InputPhone(phoneSlice)
+	}
+	return *&phoneSlice
+}
+
+func ValidateName(name *string) bool {
+	var c model.Contact
+	typeOf := reflect.TypeOf(c)
+	if typeOf.Field(1).Tag.Get("required") == "true" {
+		if *name == "" {
+			return false
+		}
+	}
+	return true
+}

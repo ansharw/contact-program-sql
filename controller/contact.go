@@ -8,6 +8,7 @@ import (
 
 type ContactHandler interface {
 	GetContacts() ([]model.Contact, error)
+	InsertContact(name, email string, phone []string) (model.Contact, error)
 }
 
 type contacthandler struct {
@@ -37,6 +38,19 @@ func (c *contacthandler) GetContacts() ([]model.Contact, error) {
 	}
 
 	return contacts, nil
+}
+
+func (c *contacthandler) InsertContact(name, email string, phone []string) (model.Contact, error) {
+	ctx := context.Background()
+
+	var contact model.Contact
+	var phoneDatas []model.Phone
+	contact.SetContact(0, name, phoneDatas, email)
+	
+	res, err := c.contactInterface.Insert(ctx, contact)
+	// c.phoneInterface.Insert(ctx, phoneDatas)
+
+	return res, err
 }
 
 // func UpdateContactHandler(co interfaces.ContactInterface, name, phone, email string) {
