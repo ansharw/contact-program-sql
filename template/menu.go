@@ -36,8 +36,8 @@ func Menu(db *sql.DB) {
 		contactTemplate.InsertContact()
 	// case 3:
 	// 	EditContact()
-	// case 4:
-	// 	DeleteContact()
+	case 4:
+		contactTemplate.DeleteContact()
 	case 5:
 		os.Exit(0)
 	default:

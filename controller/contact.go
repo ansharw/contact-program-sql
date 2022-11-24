@@ -12,6 +12,7 @@ type ContactHandler interface {
 	// InsertContact(name, email string, phone []string) (model.Contact, error)
 	// without nilai balikan sehabis insert
 	InsertContact(name, email string, phone []string) error
+	DeleteContact(id int) error
 }
 
 type contacthandler struct {
@@ -95,7 +96,19 @@ func (c *contacthandler) InsertContact(name, email string, phone []string) error
 		return err
 	}
 	contact.SetPhone(phoneDatas)
+	return nil
+}
 
+func (c *contacthandler) DeleteContact(id int) error {
+	ctx := context.Background()
+	err1 := c.phoneInterface.DeletePhoneByContactId(ctx, id)
+	if err1 != nil {
+		return err1
+	}
+	err := c.contactInterface.Delete(ctx, id)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

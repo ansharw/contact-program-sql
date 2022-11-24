@@ -44,7 +44,15 @@ func (repo *phoneRepository) InsertPhones(ctx context.Context, phoneDatas []mode
 		v.SetPhone(int(lastInsertId), *phone)
 	}
 	return phoneDatas, nil
+}
 
+func (repo *phoneRepository) DeletePhoneByContactId(ctx context.Context, contact_id int) error {
+	var query string = "DELETE FROM phone_data WHERE contact_id=?;"
+	_, err := repo.db.ExecContext(ctx, query, contact_id)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (repo *phoneRepository) GetPhoneByContactId(ctx context.Context, contact_id int) ([]model.Phone, error) {
